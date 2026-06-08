@@ -1,0 +1,156 @@
+---
+import { SITE_TITLE } from '../consts';
+import { alternatePath, getLangFromUrl, localizePath, useTranslations } from '../i18n/ui';
+import HeaderLink from './HeaderLink.astro';
+import Social from './Social.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const navItems = [
+	{ key: 'nav.home', path: '/' },
+	{ key: 'nav.projects', path: '/projects' },
+	{ key: 'nav.blog', path: '/blog' },
+	{ key: 'nav.about', path: '/about' },
+] as const;
+
+const altUrl = alternatePath(Astro.url, lang);
+const altLabel = lang === 'en' ? '中文' : 'EN';
+const homeHref = localizePath('/', lang);
+---
+
+<header>
+	<nav class="container">
+		<a class="brand" href={homeHref}>
+			<span class="mark">EHS</span><span class="brand-text">{SITE_TITLE}</span>
+		</a>
+		<button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+			<span></span><span></span><span></span>
+		</button>
+		<div class="nav-links">
+			{
+				navItems.map((item) => (
+					<HeaderLink href={localizePath(item.path, lang)}>{t(item.key)}</HeaderLink>
+				))
+			}
+			<span class="divider"></span>
+			<a class="lang-switch" href={altUrl} aria-label="Switch language">{altLabel}</a>
+			<Social size={18} />
+		</div>
+	</nav>
+</header>
+
+<style>
+	header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: rgba(10, 14, 22, 0.82);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid var(--border-soft);
+	}
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 64px;
+	}
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		color: var(--heading);
+		font-weight: 700;
+		font-size: 1.05rem;
+		letter-spacing: -0.01em;
+	}
+	.brand:hover {
+		text-decoration: none;
+		color: var(--heading);
+	}
+	.mark {
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+		color: var(--accent);
+		border: 1px solid rgba(45, 212, 191, 0.35);
+		background: var(--accent-soft);
+		padding: 0.2em 0.5em;
+		border-radius: 6px;
+	}
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 1.4rem;
+	}
+	.divider {
+		width: 1px;
+		height: 20px;
+		background: var(--border);
+	}
+	.lang-switch {
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		color: var(--text-dim);
+		border: 1px solid var(--border);
+		border-radius: 6px;
+		padding: 0.25em 0.6em;
+		transition: all 0.15s ease;
+	}
+	.lang-switch:hover {
+		color: var(--accent);
+		border-color: var(--accent);
+		text-decoration: none;
+	}
+	.menu-toggle {
+		display: none;
+		flex-direction: column;
+		gap: 5px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 6px;
+	}
+	.menu-toggle span {
+		width: 24px;
+		height: 2px;
+		background: var(--text);
+		border-radius: 2px;
+		transition: 0.2s;
+	}
+
+	@media (max-width: 760px) {
+		.menu-toggle {
+			display: flex;
+		}
+		.nav-links {
+			position: absolute;
+			top: 64px;
+			left: 0;
+			right: 0;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+			padding: 1.4rem 1.5rem 1.8rem;
+			background: var(--bg-elev);
+			border-bottom: 1px solid var(--border);
+			transform: translateY(-150%);
+			transition: transform 0.25s ease;
+		}
+		.nav-links.open {
+			transform: translateY(0);
+		}
+		.divider {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	const toggle = document.querySelector('.menu-toggle');
+	const links = document.querySelector('.nav-links');
+	toggle?.addEventListener('click', () => {
+		const open = links?.classList.toggle('open');
+		toggle.setAttribute('aria-expanded', String(!!open));
+	});
+</script>

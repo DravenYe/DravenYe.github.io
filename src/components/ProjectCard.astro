@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/ui';
+
+interface Props {
+	project: CollectionEntry<'projects'> | CollectionEntry<'projectsZh'>;
+}
+const { project } = Astro.props;
+const { title, tagline, status, stack } = project.data;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const href = localizePath(`/projects/${project.id}/`, lang);
+const more = lang === 'zh' ? '查看项目 →' : 'View project →';
+---
+
+<a class="card project-card" href={href}>
+	<div class="top">
+		<span class="status-badge">{status}</span>
+	</div>
+	<h3>{title}</h3>
+	<p class="tagline">{tagline}</p>
+	<div class="tag-row stack">
+		{stack.slice(0, 5).map((s) => <span class="tag">{s}</span>)}
+	</div>
+	<span class="more">{more}</span>
+</a>
+
+<style>
+	.project-card {
+		gap: 0.4rem;
+	}
+	.top {
+		margin-bottom: 0.4rem;
+	}
+	.project-card h3 {
+		margin: 0;
+		color: var(--heading);
+	}
+	.tagline {
+		color: var(--text-dim);
+		margin: 0 0 0.4rem;
+	}
+	.stack {
+		margin-top: auto;
+		padding-top: 0.8rem;
+	}
+	.more {
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		color: var(--accent);
+		margin-top: 1rem;
+	}
+</style>

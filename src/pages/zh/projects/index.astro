@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import Header from '../../../components/Header.astro';
+import ProjectCard from '../../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projectsZh')).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<!doctype html>
+<html lang="zh">
+	<head>
+		<BaseHead
+			title="项目 — Draven EHS Lab"
+			description="在 EHS 与 AI 交叉处搭建的工具与系统：EHS 合规 RAG 系统、滤毒盒寿命自动化工具，等等。"
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="container">
+				<p class="eyebrow">项目</p>
+				<h1>我做过的东西</h1>
+				<p class="lead">
+					是能用的工具，不是 PPT。每一个都源自真实的 EHS 问题，并被端到端地做了出来——
+					背后的工程决策与取舍，写在 <a href="/zh/blog">文章</a> 里。
+				</p>
+				<div class="grid grid-2 list">
+					{projects.map((project) => <ProjectCard project={project} />)}
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.lead {
+		max-width: 640px;
+		margin-bottom: 2.5rem;
+	}
+	.list {
+		margin-top: 1rem;
+	}
+</style>

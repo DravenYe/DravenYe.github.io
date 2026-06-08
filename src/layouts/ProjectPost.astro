@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/ui';
+
+type Props = CollectionEntry<'projects'>['data'];
+
+const { title, tagline, description, status, stack, repo, demo, heroImage } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<html lang={lang}>
+	<head>
+		<BaseHead title={`${title} — Draven EHS Lab`} description={description} image={heroImage} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="prose-container post-head">
+					<a class="back" href={localizePath('/projects', lang)}>{t('project.back')}</a>
+					<span class="status-badge">{status}</span>
+					<h1>{title}</h1>
+					<p class="lead">{tagline}</p>
+					<div class="tag-row stack">
+						{stack.map((s) => <span class="tag">{s}</span>)}
+					</div>
+					{
+						(repo || demo) && (
+							<div class="actions">
+								{repo && (
+									<a class="btn btn-primary" href={repo} target="_blank" rel="noopener">
+										{t('project.github')}
+									</a>
+								)}
+								{demo && (
+									<a class="btn" href={demo} target="_blank" rel="noopener">
+										{t('project.demo')}
+									</a>
+								)}
+							</div>
+						)
+					}
+				</div>
+				{
+					heroImage && (
+						<div class="prose-container">
+							<Image class="hero" width={1280} height={640} src={heroImage} alt="" />
+						</div>
+					)
+				}
+				<div class="prose-container prose">
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.post-head {
+		padding-top: 3rem;
+	}
+	.back {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		display: inline-block;
+		margin-bottom: 1.4rem;
+	}
+	.post-head h1 {
+		margin: 0.8rem 0 0.4rem;
+	}
+	.lead {
+		margin-bottom: 1.2rem;
+	}
+	.stack {
+		margin-bottom: 1.5rem;
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.8rem;
+	}
+	.hero {
+		width: 100%;
+		border-radius: 14px;
+		border: 1px solid var(--border);
+		margin: 2rem 0;
+	}
+	.prose {
+		padding-bottom: 2rem;
+	}
+	.prose :global(h2) {
+		margin-top: 2.2rem;
+	}
+	.prose :global(img) {
+		border: 1px solid var(--border);
+		margin: 1.5rem 0;
+	}
+</style>

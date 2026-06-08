@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Projects — Draven EHS Lab"
+			description="Tools and systems built at the intersection of EHS and AI: an EHS compliance RAG system, a respirator service-life automation tool, and more."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="container">
+				<p class="eyebrow">Projects</p>
+				<h1>Things I've built</h1>
+				<p class="lead">
+					Working tools, not slideware. Each one started from a real EHS problem and
+					was built end-to-end — the engineering decisions and trade-offs are written
+					up in <a href="/blog">Writing</a>.
+				</p>
+				<div class="grid grid-2 list">
+					{projects.map((project) => <ProjectCard project={project} />)}
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.lead {
+		max-width: 640px;
+		margin-bottom: 2.5rem;
+	}
+	.list {
+		margin-top: 1rem;
+	}
+</style>

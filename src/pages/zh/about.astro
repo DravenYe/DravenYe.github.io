@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Social from '../../components/Social.astro';
+import { SOCIAL } from '../../consts';
+import avatar from '../../assets/avatar.png';
+---
+
+<!doctype html>
+<html lang="zh">
+	<head>
+		<BaseHead
+			title="关于 — Draven EHS Lab"
+			description="一名 EHS 专业人士，为工艺安全与法规合规搭建 AI 工具。积累作品，而非粉丝。"
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="prose-container">
+				<Image class="avatar" src={avatar} alt="Draven" width={96} height={96} />
+				<p class="eyebrow">关于</p>
+				<h1>Draven EHS Lab</h1>
+
+				<p class="lead">
+					我是一名在化工 EHS 领域拥有十余年技术与管理经验的从业者，
+					致力于将 AI 技术应用于 EHS，赋能 EHS 管理。
+				</p>
+
+				<p>
+					这个网站是我的"总部"：一个长期运营的、独立的知识实验室，而不是个人博客或商业网站。
+					我的工作围绕四个方向——<strong>AI for EHS</strong>、<strong>工艺安全</strong>、
+					<strong>法规情报</strong> 和 <strong>风险管理</strong>——
+					我把自己搭建的系统、以及背后的工程决策与取舍，都公开写出来。
+				</p>
+
+				<h2>理念</h2>
+				<p>
+					<strong>积累作品，而非粉丝。</strong> 网站优先、长期主义、持续输出。
+					先积累知识，再积累影响力；先建立作品，再建立品牌。
+					不以流量为目标，不日更，不追热点。目标是一份能随时间复利增长的、扎实的作品体系。
+				</p>
+
+				<h2>这里有什么</h2>
+				<ul>
+					<li>
+						<strong><a href="/zh/projects">项目</a></strong>——我做过的能用的工具：
+						一套 EHS 合规 RAG 系统、一个滤毒盒寿命自动化工具、备考工具，以及更多正在路上的东西。
+					</li>
+					<li>
+						<strong><a href="/zh/blog">文章</a></strong>——关于 EHS 与 AI 的原创、务实的文章与研发日志。
+						重质量，不追数量。
+					</li>
+				</ul>
+
+				<h2>在别处</h2>
+				<p class="muted">代码在 GitHub，职业动态在 LinkedIn，长文在 Substack。</p>
+				<Social size={24} />
+				<p class="subscribe">
+					<a class="btn btn-primary" href={SOCIAL.substack} target="_blank" rel="noopener">
+						在 Substack 订阅
+					</a>
+				</p>
+
+				<hr />
+				<p class="disclaimer muted">
+					本站内容仅代表我的个人观点与经验，出于专业交流与学习目的分享，不构成任何法律、
+					法规或合规建议。项目相关内容均使用泛化、去标识化的示例与公开法规。
+				</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	section {
+		padding-top: 3rem;
+	}
+	.avatar {
+		width: 96px;
+		height: 96px;
+		border-radius: 50%;
+		border: 1px solid var(--border);
+		margin-bottom: 1.2rem;
+	}
+	h2 {
+		margin-top: 2.4rem;
+	}
+	.subscribe {
+		margin-top: 1.6rem;
+	}
+	.disclaimer {
+		font-size: 0.88rem;
+	}
+</style>

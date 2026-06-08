@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Social from '../components/Social.astro';
+import { SOCIAL } from '../consts';
+import avatar from '../assets/avatar.png';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="About — Draven EHS Lab"
+			description="An EHS professional building AI tools for process safety and regulatory compliance. Build assets, not followers."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="prose-container">
+				<Image class="avatar" src={avatar} alt="Draven" width={96} height={96} />
+				<p class="eyebrow">About</p>
+				<h1>Draven EHS Lab</h1>
+
+				<p class="lead">
+					I'm an EHS professional with over a decade of technical and management
+					experience in the chemical industry. I'm focused on bringing AI into EHS —
+					empowering EHS management with the tools and systems I build.
+				</p>
+
+				<p>
+					This site is the headquarters: a long-term, independent knowledge lab rather
+					than a personal blog or a business. I work across four areas —
+					<strong>AI for EHS</strong>, <strong>process safety</strong>,
+					<strong>regulatory intelligence</strong>, and
+					<strong>risk management</strong> — and I publish the systems I build along
+					with the engineering decisions and trade-offs behind them.
+				</p>
+
+				<h2>The philosophy</h2>
+				<p>
+					<strong>Build assets, not followers.</strong> Website first, long-term,
+					steady output. Accumulate knowledge before influence; build work before a
+					brand. I'm not chasing traffic, I don't post daily, and I don't chase
+					trends. The goal is a durable body of work that compounds over time.
+				</p>
+
+				<h2>What you'll find here</h2>
+				<ul>
+					<li>
+						<strong><a href="/projects">Projects</a></strong> — working tools I've
+						built: an EHS compliance RAG system, a respirator service-life automation
+						tool, exam-prep tooling, and more to come.
+					</li>
+					<li>
+						<strong><a href="/blog">Writing</a></strong> — original, practical essays
+						and build logs on EHS and AI. Quality over cadence.
+					</li>
+				</ul>
+
+				<h2>Elsewhere</h2>
+				<p class="muted">
+					Code on GitHub, professional updates on LinkedIn, longer essays on Substack.
+				</p>
+				<Social size={24} />
+				<p class="subscribe">
+					<a class="btn btn-primary" href={SOCIAL.substack} target="_blank" rel="noopener">
+						Subscribe on Substack
+					</a>
+				</p>
+
+				<hr />
+				<p class="disclaimer muted">
+					Everything here reflects my own views and experience. It is shared for
+					professional and educational purposes and does not constitute legal,
+					regulatory, or compliance advice. Project write-ups use generalized,
+					de-identified examples and public regulations only.
+				</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	section {
+		padding-top: 3rem;
+	}
+	.avatar {
+		width: 96px;
+		height: 96px;
+		border-radius: 50%;
+		border: 1px solid var(--border);
+		margin-bottom: 1.2rem;
+	}
+	h2 {
+		margin-top: 2.4rem;
+	}
+	.subscribe {
+		margin-top: 1.6rem;
+	}
+	.disclaimer {
+		font-size: 0.88rem;
+	}
+</style>

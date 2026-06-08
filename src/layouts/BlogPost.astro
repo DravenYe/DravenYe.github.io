@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/ui';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<html lang={lang}>
+	<head>
+		<BaseHead title={title} description={description} image={heroImage} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="prose-container post-head">
+					<a class="back" href={localizePath('/blog', lang)}>{t('post.back')}</a>
+					<div class="tag-row">
+						{tags?.map((t) => <span class="tag">{t}</span>)}
+					</div>
+					<h1>{title}</h1>
+					<p class="date muted">
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<span class="updated"> · updated <FormattedDate date={updatedDate} /></span>
+							)
+						}
+					</p>
+				</div>
+				{
+					heroImage && (
+						<div class="prose-container">
+							<Image class="hero" width={1280} height={640} src={heroImage} alt="" />
+						</div>
+					)
+				}
+				<div class="prose-container prose">
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.post-head {
+		padding-top: 3rem;
+	}
+	.back {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		display: inline-block;
+		margin-bottom: 1.4rem;
+	}
+	.post-head h1 {
+		margin: 0.6rem 0 0.6rem;
+	}
+	.date {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		margin: 0;
+	}
+	.hero {
+		width: 100%;
+		border-radius: 14px;
+		border: 1px solid var(--border);
+		margin: 2rem 0;
+	}
+	.prose {
+		padding-bottom: 2rem;
+	}
+	.prose :global(h2) {
+		margin-top: 2.2rem;
+		padding-top: 0.6rem;
+	}
+	.prose :global(img) {
+		border: 1px solid var(--border);
+		margin: 1.5rem 0;
+	}
+</style>
