@@ -2,7 +2,7 @@
 title: 'Building an AI-Powered EHS Compliance System: From Q&A to Obligation-Level Gap Analysis'
 description: 'The full story of an EHS compliance RAG system for Chinese chemical manufacturing — hybrid retrieval, obligation-level gap analysis, the engineering potholes along the way, and teaching the AI to review its own conclusions.'
 pubDate: 2026-05-30
-heroImage: ../../assets/ehs-rag/cover.png
+heroImage: ../../assets/ehs-rag/cover-en.png
 tags:
   - AI for EHS
   - RAG
@@ -95,7 +95,7 @@ The company has a procedure called the *"Three Simultaneous" Management System* 
 
 "Site selection compliance" and "Three Simultaneous construction management" have low cosine similarity in embedding space — even though any experienced EHS professional connects them instantly. This is the fundamental limit of pure semantic search: it finds what's *similar in meaning*, not always what's *relevant in practice*.
 
-![Hybrid retrieval pipeline: obligation text fans out to vector and BM25 search, fused by RRF, reranked by a cross-encoder, then confirmed by the LLM.](../../assets/ehs-rag/retrieval-pipeline.png)
+![Hybrid retrieval pipeline: obligation text fans out to vector and BM25 search, fused by RRF, reranked by a cross-encoder, then confirmed by the LLM.](../../assets/ehs-rag/retrieval-pipeline-en.png)
 
 The fix was to mirror the hybrid architecture already proven on the regulation side: add BM25 keyword retrieval to procedure search, fuse with RRF, rerank with the same cross-encoder. The keyword "三同时" now gets an exact BM25 hit, rescued from the semantic blind spot. Then one more layer — the Phase 2 LLM explicitly confirms which retrieved documents actually cover the obligation, so hazardous-waste procedures stop appearing as evidence for major-hazard obligations just because their vectors overlap.
 
@@ -103,7 +103,7 @@ The fix was to mirror the hybrid architecture already proven on the regulation s
 
 Getting the architecture right was necessary but not sufficient. Three subtle output-quality problems each needed their own fix.
 
-![Three quality problems and their fixes: hallucinated specifics filtered out, empty confirmation lists auto-repaired, misclassified chapters corrected in code.](../../assets/ehs-rag/quality-issues.png)
+![Three quality problems and their fixes: hallucinated specifics filtered out, empty confirmation lists auto-repaired, misclassified chapters corrected in code.](../../assets/ehs-rag/quality-issues-en.png)
 
 ### Problem 1 — Obligations that sound authoritative but aren't
 
@@ -151,7 +151,7 @@ While reworking extraction, I found a stranger problem in GB 30871. Clause 4.12 
 
 Not garbled text — a physical page-layout artifact. The standard reference `GB/T50493—2019` happened to span a page break: the page ended with `GB/T50493—`, the next page rendered an unrelated paragraph first (`c) …`), and only then the year `2019…`. Reading by coordinate order spliced the unrelated paragraph straight into the citation. Scanning all of GB 30871, 3 of 226 text blocks (1.3%) had this defect.
 
-![A standard citation fractured across a page break, with the inserted paragraph automatically removed to restore the correct reference.](../../assets/ehs-rag/pdf-break.png)
+![A standard citation fractured across a page break, with the inserted paragraph automatically removed to restore the correct reference.](../../assets/ehs-rag/pdf-break-en.png)
 
 **Fix:** at the cleaning stage, a regex detects the pattern *standard-number at line end → 1–4 inserted lines → year continuation*, and if the insertion is under ~150 characters it's removed and the citation restored. The extraction logic is now its own module, reusable for procedure PDFs too.
 
@@ -159,7 +159,7 @@ Not garbled text — a physical page-layout artifact. The standard reference `GB
 
 The most recent layer is the one I'm most pleased with: **a self-review agent (GapReviewAgent)** that runs after the AI finishes but before results reach the user. Crucially, it's a **pure rule engine — no LLM call, zero added hallucination risk**, running in milliseconds and fully decoupled from the analysis pipeline.
 
-![The review panel: each flagged issue with accept / reject / add-to-remediation controls and a remediation summary.](../../assets/ehs-rag/n1-panel.png)
+![The review panel: each flagged issue with accept / reject / add-to-remediation controls and a remediation summary.](../../assets/ehs-rag/n1-panel-en.png)
 
 It checks three things:
 
@@ -171,7 +171,7 @@ And a deliberate boundary: **the agent recommends; it does not silently edit.** 
 
 ## What the system does today
 
-![The system home: regulation Q&A, regulation library, gap analysis, procedure library, and factory profile — with a status panel and the underlying tech stack.](../../assets/ehs-rag/screenshot-dashboard.png)
+![System capability overview: regulation Q&A, regulation library, factory profile, procedure library, gap analysis, and the N1 self-review layer — 17 capabilities shipped, 2 in progress.](../../assets/ehs-rag/features-en.png)
 
 | Capability | Status |
 |---|---|
