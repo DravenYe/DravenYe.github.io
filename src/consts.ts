@@ -13,9 +13,9 @@ export const NAV = [
 	{ href: '/about', label: 'About' },
 ];
 
-// Social / external profiles. Update LINKEDIN and SUBSTACK once confirmed.
+// Social / external profiles.
 export const SOCIAL = {
 	github: 'https://github.com/DravenYe',
-	linkedin: 'https://www.linkedin.com/in/draven-ye/', // TODO: confirm exact URL
+	linkedin: 'https://www.linkedin.com/in/draven-ye-7b318098/',
 	substack: 'https://substack.com/@draven377925',
 };
